@@ -1,14 +1,13 @@
 package cn.datacharm.mallcartservice.controller;
 
-import java.util.List;
-
 import cn.datacharm.mallcartservice.service.CartService;
 import cn.datacharm.pojo.Cart;
+import cn.datacharm.vo.SysResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import java.util.List;
 
 @RestController
 @RequestMapping("cart/manage")
@@ -20,4 +19,50 @@ public class CartController {
 	public List<Cart> queryMyCart(String userId){
 		return cartService.queryMyCart(userId);
 	}
+	//购物车数据新增
+	@RequestMapping("save")
+	public SysResult saveCart(Cart cart){
+		try{//cart name price image
+			//userId productId num传递的
+			//调用业务层代码实现insert封装
+			cartService.saveCart(cart);
+			return SysResult.ok();
+		}catch(Exception e){
+			e.printStackTrace();
+			return SysResult.build(201, "", null);
+		}
+	}
+	//更新num
+	@RequestMapping("")
+	public SysResult updateNum(Cart cart){
+		try{
+			cartService.updateNum(cart);
+			return SysResult.ok();
+		}catch(Exception e){
+			e.printStackTrace();
+			return SysResult.build(201, "", null);
+		}
+	}
+	//删除购物车商品
+	@RequestMapping("delete")
+	public SysResult deleteCart(Cart cart){
+		try{
+			//userId productId
+			cartService.deleteCart(cart);
+			return SysResult.ok();
+		}catch(Exception e){
+			e.printStackTrace();
+			return SysResult.build(201, "", null);
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+

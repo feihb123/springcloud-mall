@@ -1,14 +1,12 @@
 package cn.datacharm.malluserservice.service;
 
-import cn.datacharm.pojo.User;
 import cn.datacharm.malluserservice.mapper.UserMapper;
+import cn.datacharm.pojo.User;
 import cn.datacharm.utils.MD5Util;
 import cn.datacharm.utils.MapperUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
 import java.util.UUID;
