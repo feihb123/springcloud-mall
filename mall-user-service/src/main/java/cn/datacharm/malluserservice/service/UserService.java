@@ -44,45 +44,58 @@ public class UserService {
     }
 
     public String login(User user) {
-        /**
-         * 对User的password进行加密
-         */
-        ShardedJedis shardedJedis = pool.getResource();
-        try {
-            user.setUserPassword(MD5Util.md5(user.getUserPassword()));
-            User existUser = userMapper.queryExist(user);
-            if (existUser != null) {
-                String userJson = MapperUtil.MP.writeValueAsString(existUser);
-                String ticket = "EM_TICKET" + System.currentTimeMillis() + existUser.getUserId();
-                jedis.setex(ticket, 60 * 60 * 2, userJson);
-                return ticket;
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        //验证登录信息
+        user.setUserPassword(MD5Util.md5(user.getUserPassword()));
+        User exist=userMapper.queryExist(user);
+        if(exist==null){
+            //登录信息不对
             return "";
-        } finally {
-            pool.returnResource(shardedJedis);
+        }else{//登录成功
+            //准备2个key值,userLoginLock ticket
+            String userLoginLock=
+                    "user_login_"+exist.getUserId()+".lock";
+            String ticket=
+                    "EM_TICKET"+System.currentTimeMillis()+exist.getUserId();
+            //判断
+            if(jedis.exists(userLoginLock)){
+                //说明曾经有人登录过,而且没超时
+                String oldTicket=jedis.get(userLoginLock);
+                jedis.del(oldTicket);
+            }//不存在顶替中的lock,说明是第一次登录
+            jedis.setex(userLoginLock, 60*3, ticket);//超时应该
+            //ticket userJson一致,并且开始存储这对key-value
+            try{
+                String userJson=MapperUtil.MP.writeValueAsString(exist);
+                jedis.setex(ticket, 60*3, userJson);
+                return ticket;
+            }catch(Exception e){
+                e.printStackTrace();
+                return "";
+            }
         }
-        return "";
     }
 
     public String queryUserJson(String ticket) {
-
-        try {
-            Long leftTime = jedis.pttl(ticket);
-            Long leaseTime = 1000 * 60 * 2L;
-            if (leftTime <= leaseTime) {
-                //达到续租条件
-                leftTime = leftTime + 1000 * 60 * 5L;
-                //做expire
+        try{
+            //判断超时时间剩余值
+            Long leftTime=jedis.pttl(ticket);
+            String userJson=jedis.get(ticket);
+            User user=MapperUtil.MP.
+                    readValue(userJson, User.class);
+            Long leaseTime=1000*60*2l;
+            if(leftTime<=leaseTime){//达到续租的条件
+                //将剩余时间加上5分钟,做续租
+                leftTime=leftTime+1000*60*5l;
+                //做expire 对ticket和userLoginLock
                 jedis.pexpire(ticket, leftTime);
-
+                jedis.pexpire("user_login_"
+                        +user.getUserId()+".lock", leftTime);
             }
-        } catch (Exception e) {
+            return userJson;
+        }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-        return null;
     }
 
 }
