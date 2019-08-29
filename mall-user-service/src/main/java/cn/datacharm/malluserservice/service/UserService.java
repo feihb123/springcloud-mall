@@ -6,8 +6,7 @@ import cn.datacharm.utils.MD5Util;
 import cn.datacharm.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ShardedJedisPool;
+import redis.clients.jedis.JedisCluster;
 
 import java.util.UUID;
 
@@ -23,9 +22,8 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    ShardedJedisPool pool;
+    private JedisCluster jedis;
 
-    private Jedis jedis = new Jedis("39.106.81.102", 6379);
 
     public int checkUserName(String userName) {
         return userMapper.checkUserName(userName);

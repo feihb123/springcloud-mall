@@ -18,6 +18,8 @@ public class CartService {
 	}
 	@Autowired
 	private RestTemplate client;
+
+	
 	public void saveCart(Cart cart) {
 		/*接收参数后需要判断当前购物车数据是否是新增还是更新
 		 *1,userId productId 查询已存在的cart
@@ -32,7 +34,7 @@ public class CartService {
 			//需要定义接口访问文件 productservice已经存在一个
 			//根据id查询商品信息的方法 /product/manage/item/{productId}
 			//根据接口文件准备一个请求地址
-			String url="http://productservice/product"
+			String url="http://product-service/product"
 					+ "/manage/item/"+cart.getProductId();
 			Product p=client.getForObject(url, Product.class);
 			//通过p补充cart对象
