@@ -55,6 +55,32 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
+
+
+        <dependency> <!-- 查询相关jar包 -->
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency> <!-- lucene自带只能中文分词器jar包 -->
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency> <!-- 测试用到的lucene工具包 -->
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency> <!-- 测试用到的lucene核心包 -->
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <dependencyManagement>
