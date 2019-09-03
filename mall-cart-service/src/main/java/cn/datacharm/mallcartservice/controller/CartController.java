@@ -40,7 +40,6 @@ public class CartController {
 			return SysResult.ok();
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("111");
 			return SysResult.build(201, "", null);
 		}
 	}
