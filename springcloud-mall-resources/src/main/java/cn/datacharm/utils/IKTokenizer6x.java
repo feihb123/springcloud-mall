@@ -1,6 +1,4 @@
-package cn.datacharm.mallimageservice.util;
-
-import java.io.IOException;
+package cn.datacharm.utils;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -8,6 +6,8 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
+
+import java.io.IOException;
 
 public class IKTokenizer6x extends Tokenizer{
 	//ik分词器实现

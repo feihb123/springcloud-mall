@@ -1,4 +1,4 @@
-package cn.datacharm.mallimageservice.util;
+package cn.datacharm.utils;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;

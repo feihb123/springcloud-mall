@@ -1,7 +1,7 @@
-package cn.datacharm.mallimageservice;
+package cn.datacharm.lucene;
 
 
-import cn.datacharm.mallimageservice.util.IKAnalyzer6x;
+import cn.datacharm.utils.IKAnalyzer6x;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
